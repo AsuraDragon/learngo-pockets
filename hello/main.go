@@ -4,15 +4,21 @@ import "fmt"
 
 type language string //#1
 
-func greet(l language) string {
-	switch l { //# 2
-	case "en":
-		return "Hello World"
-	case "fr":
-		return "Bonjour le monde"
-	default:
-		return ":=)"
+var phrasebook = map[language]string{
+	"el": "Χαίρετε Κόσμε",      // Greek
+	"en": "Hello world",        // English
+	"fr": "Bonjour le monde",   // French
+	"he": "םלוע םולש",          // Hebrew
+	"ur": "ﺎﯿﻧد ﻮﻠﯿہ",          // Urdu
+	"vi": "Xin chào Thế Giới", // Vietnamese
+}
+
+func greet(l language) string { //#1
+	greeting, ok := phrasebook[l] //#2
+	if !ok {
+		return fmt.Sprintf("Unsupported language: %q", l)
 	}
+	return greeting
 }
 
 func main() {
