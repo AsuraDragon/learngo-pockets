@@ -86,3 +86,68 @@ func TestLoadBookworms_Success(t *testing.T) {
 		})
 	}
 }
+
+// equalBooksCount is a helper to test the equality of two maps of
+// books count.
+func equalBooksCount(t *testing.T, got map[Book]uint, want map[Book]uint) bool {
+	t.Helper()
+
+	if len(got) != len(want) { //#1
+		return false
+	}
+	for book, targetCount := range want { //#2
+		count, ok := got[book]           //#3
+		if !ok || count != targetCount { //#4
+			return false //#5
+		}
+	}
+
+	return true //#6
+}
+
+func TestBooksCount(t *testing.T) {
+	tt := map[string]struct {
+		input []Bookworm
+		want  map[Book]uint
+	}{
+		"nominal use case": {
+			input: []Bookworm{
+				{Name: "Fadi", Books: []Book{
+					handmaidsTale, theBellJar, // #1
+				}},
+				{Name: "Peggy", Books: []Book{oryxAndCrake, handmaidsTale, janeEyre}},
+			},
+			want: map[Book]uint{
+				handmaidsTale: 2,
+				theBellJar:    1,
+				oryxAndCrake:  1,
+				janeEyre:      1},
+		},
+		"no bookworms": {
+			input: []Bookworm{},
+			want:  map[Book]uint{}, //#2
+		},
+		"bookworm without books": {
+			input: []Bookworm{
+				{Name: "Fadi", Books: []Book{}},
+				{Name: "Peggy", Books: []Book{}},
+			},
+			want: map[Book]uint{},
+		}, "bookworm with twice the same book": {
+			input: []Bookworm{
+				{Name: "Fadi", Books: []Book{handmaidsTale, handmaidsTale}},
+				{Name: "Peggy", Books: []Book{handmaidsTale}},
+			},
+			want: map[Book]uint{handmaidsTale: 3},
+		},
+	}
+
+	for name, tc := range tt {
+		t.Run(name, func(t *testing.T) {
+			got := booksCount(tc.input)
+			if !equalBooksCount(t, got, tc.want) { //#3
+				t.Fatalf("Got a different list of books: %v, expected %v", got, tc.want)
+			}
+		})
+	}
+}
