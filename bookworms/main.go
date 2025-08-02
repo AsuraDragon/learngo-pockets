@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 )
@@ -13,6 +14,28 @@ func displayBooks(books []Book) {
 }
 
 func main() {
+	var filePath string
+	flag.StringVar(&filePath, "filePath", "testdata/bookworms.json",
+		`Introduce the file path of an existing JSON file that contains the booksworms structure information
+EXAMPLE OF FILE
+
+[
+    {
+        "name": "Karen Georgina Medina Gonzales",
+        "books": [
+            {
+                "author": "Margaret Atwood",
+                "title": "The Handmaid's Tale"
+            },
+            {
+                "author": "Sylvia Plath",
+                "title": "The Bell Jar"
+            }
+        ]
+    }
+]
+	`)
+	flag.Parse()
 	bookworms, err := loadBookWorms("testdata/bookworms.json")
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "Failed to load bookworms: %s\n", err)
