@@ -151,3 +151,75 @@ func TestBooksCount(t *testing.T) {
 		})
 	}
 }
+
+func TestFindCommonBooks(t *testing.T) {
+	tt := map[string]struct {
+		input []Bookworm
+		want  []Book
+	}{
+		"Everyone has read the same book": {
+			input: []Bookworm{
+				{Name: "Fadi", Books: []Book{
+					handmaidsTale,
+				}},
+				{Name: "Peggy", Books: []Book{
+					handmaidsTale,
+				}},
+			},
+			want: []Book{handmaidsTale},
+		},
+		"People have completely different lists.": {
+			input: []Bookworm{
+				{Name: "Fadi", Books: []Book{
+					handmaidsTale,
+				}},
+				{Name: "Peggy", Books: []Book{
+					oryxAndCrake,
+				}},
+			},
+			want: []Book{},
+		},
+		"More than two bookworms have a book in common": {
+			input: []Bookworm{
+				{Name: "Fadi", Books: []Book{
+					oryxAndCrake, handmaidsTale,
+				}},
+				{Name: "Peggy", Books: []Book{
+					oryxAndCrake, handmaidsTale,
+				}},
+				{Name: "Hector", Books: []Book{
+					oryxAndCrake, handmaidsTale,
+				}},
+			},
+			want: []Book{oryxAndCrake, handmaidsTale},
+		},
+
+		"One bookworm has no books (oh the sadness!).": {
+			input: []Bookworm{
+				{Name: "Fadi", Books: []Book{}},
+				{Name: "Peggy", Books: []Book{
+					oryxAndCrake,
+				}},
+			},
+			want: []Book{},
+		},
+		"Nobody has any books (oh the agony!).": {
+			input: []Bookworm{
+				{Name: "Fadi", Books: []Book{}},
+				{Name: "Peggy", Books: []Book{}},
+			},
+			want: []Book{},
+		},
+	}
+	for name, tc := range tt {
+		t.Run(name, func(t *testing.T) {
+			got := findCommonBooks(tc.input)
+			if !equalBooks(t, got, tc.want) {
+				t.Fatalf("Got a different list of books: %v, expected %v", got, tc.want)
+			}
+		})
+	}
+
+}
+
+
