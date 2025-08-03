@@ -5,12 +5,11 @@ import (
 )
 
 var (
-	handmaidsTale = Book{
-		Author: "Margaret Atwood", Title: "The Handmaid's Tale",
-	}
-	oryxAndCrake = Book{Author: "Margaret Atwood", Title: "Oryx and Crake"}
-	theBellJar   = Book{Author: "Sylvia Plath", Title: "The Bell Jar"}
-	janeEyre     = Book{Author: "Charlotte Brontë", Title: "Jane Eyre"}
+	handmaidsTale = Book{Author: "Margaret Atwood", Title: "The Handmaid's Tale"}
+	oryxAndCrake  = Book{Author: "Margaret Atwood", Title: "Oryx and Crake"}
+	theBellJar    = Book{Author: "Sylvia Plath", Title: "The Bell Jar"}
+	janeEyre      = Book{Author: "Charlotte Brontë", Title: "Jane Eyre"}
+	ilPrincipe    = Book{Author: "Niccolò Machiavelli", Title: "Il Principe"}
 )
 
 // equalBooks is a helper to test the equality of two lists of Books.
@@ -221,5 +220,3 @@ func TestFindCommonBooks(t *testing.T) {
 	}
 
 }
-
-

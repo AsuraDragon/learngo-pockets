@@ -9,7 +9,15 @@ import (
 // displayBooks prints out the titles and authors of a list of books
 func displayBooks(books []Book) {
 	for _, book := range books {
-		fmt.Printf("%v", book)
+		fmt.Printf("%+v\n", book)
+	}
+}
+
+func displayRecommendations(recommendations []Bookworm) {
+	for _, bookworm := range recommendations {
+		fmt.Printf("\nHere are the recommendations for %s:\n", bookworm.Name)
+		displayBooks(bookworm.Books)
+		fmt.Println()
 	}
 }
 
@@ -44,4 +52,7 @@ EXAMPLE OF FILE
 	commonBooks := findCommonBooks(bookworms)
 	fmt.Println("Here are the books that are common:")
 	displayBooks(commonBooks)
+
+	recommendations := recommendOtherBooks(bookworms)
+	displayRecommendations(recommendations)
 }
